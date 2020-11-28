@@ -16,12 +16,12 @@ module Board where
     dropInSlot [] _ _ = [[]]
     dropInSlot bd i p 
         | not (isSlotOpen bd i) = []
-        | replaceSlot bd p (numRows bd) i
+        | otherwise = replaceSlot bd p (numRows bd) i
 
     --Replaces the empty slot with player number
     replaceSlot :: [[Int]] -> Int -> Int -> Int -> [[Int]]
     replaceSlot bd p r c
-        | bd!!r!!c == 0 = (take r bd ++ [take c (bd!!r) ++ [p] ++ drop (c+1) (bd!!r)] ++ drop (r+1) bd) -- If empty slot, replace and update board
+        | bd!!r!!c == 0 = (take r bd ++ [take c (bd!!r) ++ [p] ++ drop (c+1) (bd!!r)] ++ drop (r+1) bd) -- If empty Slot ]update board
         | otherwise = replaceSlot bd p (r-1) c -- Slot Taken
     
     -- returns num of rows - 1
