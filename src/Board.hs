@@ -20,10 +20,9 @@ module Board where
 
     --Replaces the empty slot with player number
     replaceSlot :: [[Int]] -> Int -> Int -> Int -> [[Int]]
-    replaceSlot board player row col
-        | row < 0 = board
-        | board!!row!!col == 0 = (take row board ++ [take col (board!!row) ++ [player] ++ drop (col+1) (board!!row)] ++ drop (row+1) board) -- If empty Slot update board
-        | otherwise = replaceSlot board player (row-1) col -- Slot Taken
+    replaceSlot bd p r c
+        | bd!!r!!c == 0 = (take r bd ++ [take c (bd!!r) ++ [p] ++ drop (c+1) (bd!!r)] ++ drop (r+1) bd) -- If empty slot, replace and update board
+        | otherwise = replaceSlot bd p (r-1) c -- Slot Taken
     
     -- returns num of rows - 1
     numRows :: [[Int]] -> Int
