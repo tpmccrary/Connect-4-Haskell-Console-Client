@@ -11,6 +11,27 @@ module Board where
     mkBoard :: Int -> Int -> [[Int]]
     mkBoard m n = replicate m (replicate n 0 )
 
+    --Finds which slot to drop the piece
+    dropInSlot :: [[Int]] -> Int -> Int -> [[Int]]
+    dropInSlot [] _ _ = [[]]
+    dropInSlot bd i p 
+        | not (isSlotOpen bd i) = []
+        | replaceSlot bd p (numRows bd) i
+
+    --Replaces the empty slot with player number
+    replaceSlot :: [[Int]] -> Int -> Int -> Int -> [[Int]]
+    replaceSlot bd p r c
+        | bd!!r!!c == 0 = (take r bd ++ [take c (bd!!r) ++ [p] ++ drop (c+1) (bd!!r)] ++ drop (r+1) bd) -- If empty slot, replace and update board
+        | otherwise = replaceSlot bd p (r-1) c -- Slot Taken
+    
+    -- returns num of rows - 1
+    numRows :: [[Int]] -> Int
+    numRows bd = length (bd) - 1
+
+    -- returns num of columns
+    numSlot :: [[Int]] -> Int
+    numSlot bd = length (bd!!0)
+
     -- Checks to see if slot i is open on board bd.
     isSlotOpen :: [[Int]] -> Int -> Bool
     isSlotOpen [[]] _ = False
@@ -21,3 +42,4 @@ module Board where
     isFull bd i = if i >= numSlot bd then True
     else if isSlotOpen bd i then False
     else isFull bd (i + 1) 
+
