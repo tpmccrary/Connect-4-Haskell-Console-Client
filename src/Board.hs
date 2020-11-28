@@ -16,7 +16,7 @@ module Board where
     dropInSlot [] _ _ = [[]]
     dropInSlot bd i p 
         | not (isSlotOpen bd i) = []
-        | replaceSlot bd p (numRows bd) i
+        | otherwise = replaceSlot bd p (numRows bd) i
 
     --Replaces the empty slot with player number
     replaceSlot :: [[Int]] -> Int -> Int -> Int -> [[Int]]
