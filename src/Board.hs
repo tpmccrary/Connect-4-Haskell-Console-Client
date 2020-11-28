@@ -50,15 +50,22 @@ module Board where
         | head == 0 = False
         | otherwise = checkTopZero tail
 
-    -- isWonBy :: [[Int]] -> Int -> Bool
-    -- isWonBy bd p = checkHorizontal bd p 0 0
+    -- Checks to see if given player won on given board.
+    isWonBy :: [[Int]] -> Int -> Bool
+    isWonBy bd p = checkHorizontals bd p
 
-    -- checkHorizontal :: [[Int]] -> Int -> Int -> Int -> Bool
-    -- checkHorizontal (head : tail) p count col
-    --     | count >= 4 = True
-    --     | length tail == 0 = False
-    --     | col >= 
-    --     | head !! col == p = checkHorizontal head p (count + 1) (col + 1)
+    -- Goes through every row and calls checkHorizontal to get them.
+    checkHorizontals :: [[Int]] -> Int -> Bool
+    checkHorizontals [] _ = False
+    checkHorizontals (head : tail) p = checkHorizontal head p 0  || checkHorizontals tail p
+    
+    -- Goes through a list to see if there are 4 in a row of the given players pieces.
+    checkHorizontal :: [Int] -> Int -> Int -> Bool
+    checkHorizontal [] _ _ = False
+    checkHorizontal (head : tail) p count
+        | count >= 4 = True
+        | head == p = checkHorizontal tail p (count + 1)
+        | head /= p = checkHorizontal tail p 0
 
 
     -- EXAMPLES of using (head : tail) with 2D array.
