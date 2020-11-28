@@ -1,15 +1,18 @@
 module Board where
 
     -- Access player, assigned to 1.
-    mkPlayer :: (Integer, Char)
-    mkPlayer = (1, 'X')
+    mkPlayer :: Int
+    mkPlayer = 1
     -- Access opponent, assign to 2.
-    mkOpponent :: (Integer, Char)
-    mkOpponent = (2, 'O')
+    mkOpponent :: Int
+    mkOpponent = 2
 
     -- Creates a board of m by n.
     mkBoard :: Int -> Int -> [[Int]]
     mkBoard m n = replicate m (replicate n 0 )
+
+    testBoard :: [[Int]]
+    testBoard = [[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [11, 12, 13, 14, 15], [16, 17, 18, 19, 20]]
 
     --Finds which slot to drop the piece
     dropInSlot :: [[Int]] -> Int -> Int -> [[Int]]
@@ -47,4 +50,25 @@ module Board where
         | head == 0 = False
         | otherwise = checkTopZero tail
 
+    -- isWonBy :: [[Int]] -> Int -> Bool
+    -- isWonBy bd p = checkHorizontal bd p 0 0
 
+    -- checkHorizontal :: [[Int]] -> Int -> Int -> Int -> Bool
+    -- checkHorizontal (head : tail) p count col
+    --     | count >= 4 = True
+    --     | length tail == 0 = False
+    --     | col >= 
+    --     | head !! col == p = checkHorizontal head p (count + 1) (col + 1)
+
+
+    -- EXAMPLES of using (head : tail) with 2D array.
+    -- Here we are looking at the rest of the 2d array. So excluding the first array. 
+    test :: [[Int]] -> [Int]
+    test (head : tail) = testRow tail
+    -- Here we look at the first thing in the 2d array given. Which was the tail of the last 2d array.
+    testRow :: [[Int]] -> [Int]
+    testRow (head : tail) = head
+    -- Test function. Outputs evertything in given 2d array.
+    returnArr :: [[Int]] -> [[Int]]
+    returnArr [] = []
+    returnArr (head : tail) = head : returnArr tail
