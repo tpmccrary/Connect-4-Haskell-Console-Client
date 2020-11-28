@@ -35,11 +35,16 @@ module Board where
     -- Checks to see if slot i is open on board bd.
     isSlotOpen :: [[Int]] -> Int -> Bool
     isSlotOpen [[]] _ = False
-    isSlotOpen bd i = if bd !! 0 !! i == 0 then True else False
+    isSlotOpen bd i = if (bd !! 0) !! i == 0 then True else False
 
     -- Checks if the board is full.
-    isFull :: [[Int]] -> Int -> Bool
-    isFull bd i = if i >= numSlot bd then True
-    else if isSlotOpen bd i then False
-    else isFull bd (i + 1) 
+    isFull :: [[Int]] -> Bool
+    isFull bd = checkTopZero (head bd)
+
+    -- Helper for isFull. Checks first row for 0.
+    checkTopZero :: [Int] -> Bool
+    checkTopZero (head : tail)
+        | head == 0 = False
+        | otherwise = checkTopZero tail
+
 
