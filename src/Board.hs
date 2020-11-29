@@ -11,6 +11,7 @@ module Board where
     mkBoard :: Int -> Int -> [[Int]]
     mkBoard m n = replicate m (replicate n 0 )
 
+    -- Board for manual testing.
     testBoard :: [[Int]]
     testBoard = [[0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0, 0],
@@ -90,19 +91,13 @@ module Board where
     checkDiagonals :: [[Int]] -> Int -> Bool
     checkDiagonals bd p = checkDiagonalsPos bd p 0 0 || checkDiagonalsNeg bd p 0 ((numSlot bd) - 1) || checkDiagonalsBotPos bd p ((numRows bd) - 1) 0  || checkDiagonalsBotNeg bd p ((numRows bd) - 1) ((numSlot bd) - 1)
 
-    -- Checks from all columns top to bottom, positive diagonals.
+    -- Checks all diagonals from top left to bottom right.
     checkDiagonalsPos :: [[Int]] -> Int -> Int -> Int -> Bool
     checkDiagonalsPos bd p row col
         | col >= numSlot bd || row >= numRows bd = False
     checkDiagonalsPos bd p row col = checkDiagTopPos bd p 0 row col || checkDiagonalsPos bd p row (col + 1)
 
-    -- Checks all columns from top to bottom, negative diagonals.
-    checkDiagonalsNeg :: [[Int]] -> Int -> Int -> Int -> Bool
-    checkDiagonalsNeg bd p row col
-        | row >= numRows bd || col < 0 = False
-    checkDiagonalsNeg bd p row col = checkDiagTopNeg bd p 0 row col || checkDiagonalsNeg bd p row (col - 1)
-
-    -- Check diagonal from top to bottom, positive.
+    -- Check diagonal from top left to bottom right.
     checkDiagTopPos :: [[Int]] -> Int -> Int -> Int -> Int -> Bool
     checkDiagTopPos bd p count row col 
         | count >= 4 = True
@@ -110,7 +105,13 @@ module Board where
         | getElem bd row col == p = checkDiagTopPos bd p (count + 1) (row + 1) (col + 1)
         | getElem bd row col /= p = checkDiagTopPos bd p 0 (row + 1) (col + 1)
 
-    -- Check diagonal from top to bottom, negative.
+    -- Checks all diagonals from top right to bottom left.
+    checkDiagonalsNeg :: [[Int]] -> Int -> Int -> Int -> Bool
+    checkDiagonalsNeg bd p row col
+        | row >= numRows bd || col < 0 = False
+    checkDiagonalsNeg bd p row col = checkDiagTopNeg bd p 0 row col || checkDiagonalsNeg bd p row (col - 1)
+
+    -- Check diagonal from top right to bottom left.
     checkDiagTopNeg :: [[Int]] -> Int -> Int -> Int -> Int -> Bool
     checkDiagTopNeg bd p count row col
         | count >= 4 = True
