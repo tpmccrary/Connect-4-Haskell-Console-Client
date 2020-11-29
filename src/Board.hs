@@ -52,7 +52,7 @@ module Board where
 
     -- Checks to see if given player won on given board.
     isWonBy :: [[Int]] -> Int -> Bool
-    isWonBy bd p = checkHorizontals bd p
+    isWonBy bd p = checkHorizontals bd p || checkVerticals bd p 0
 
     -- Goes through every row and calls checkHorizontal to get them.
     checkHorizontals :: [[Int]] -> Int -> Bool
