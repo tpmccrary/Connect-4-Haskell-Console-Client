@@ -54,6 +54,7 @@ module Board where
     checkTopZero :: [Int] -> Bool
     checkTopZero (head : tail)
         | head == 0 = False
+        | length (tail) == 0 = True
         | otherwise = checkTopZero tail
 
     -- Checks to see if given player won on given board.
@@ -158,13 +159,14 @@ module Board where
     getElem :: [[Int]] -> Int -> Int -> Int
     getElem bd row col = (bd !! row) !! col
 
+    --Turns board to string
     boardToStr playerToChar bd = changeRow playerToChar (concat bd) 1
 
+    -- Creates indexed row and converts each row to string
     changeRow playerToChar [] i = " 1  2  3  4  5  6  7"
     changeRow playerToChar (h:t) i
         | (i == 7) = (playerToChar h)++"\n"++(changeRow playerToChar t 1)
         | otherwise = (playerToChar h)++(changeRow playerToChar t (i+1))
-
 
     -- EXAMPLES of using (head : tail) with 2D array.
     -- Here we are looking at the rest of the 2d array. So excluding the first array. 
