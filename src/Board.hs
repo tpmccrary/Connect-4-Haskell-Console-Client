@@ -86,21 +86,23 @@ module Board where
         | getElem bd row col == p = checkVertical bd p (count + 1) (row + 1) col
         | getElem bd row col /= p = checkVertical bd p 0 (row + 1) col
 
-    -- Checks every diagnoal. Top left to bottom right, top right to bottom left. 
+    -- Checks every diagnoal. Top left to bottom right, top right to bottom left, bottom left to top right, and bottom right to top left. 
     checkDiagonals :: [[Int]] -> Int -> Bool
-    checkDiagonals bd p = checkDiagonalsPos bd p 0 0 || checkDiagonalsNeg bd p 0 ((numSlot bd) - 1)
+    checkDiagonals bd p = checkDiagonalsPos bd p 0 0 || checkDiagonalsNeg bd p 0 ((numSlot bd) - 1) || checkDiagonalsBotPos bd p ((numRows bd) - 1) 0  || checkDiagonalsBotNeg bd p ((numRows bd) - 1) ((numSlot bd) - 1)
 
+    -- Checks from all columns top to bottom, positive diagonals.
     checkDiagonalsPos :: [[Int]] -> Int -> Int -> Int -> Bool
     checkDiagonalsPos bd p row col
         | col >= numSlot bd || row >= numRows bd = False
     checkDiagonalsPos bd p row col = checkDiagTopPos bd p 0 row col || checkDiagonalsPos bd p row (col + 1)
 
+    -- Checks all columns from top to bottom, negative diagonals.
     checkDiagonalsNeg :: [[Int]] -> Int -> Int -> Int -> Bool
     checkDiagonalsNeg bd p row col
         | row >= numRows bd || col < 0 = False
     checkDiagonalsNeg bd p row col = checkDiagTopNeg bd p 0 row col || checkDiagonalsNeg bd p row (col - 1)
 
-
+    -- Check diagonal from top to bottom, positive.
     checkDiagTopPos :: [[Int]] -> Int -> Int -> Int -> Int -> Bool
     checkDiagTopPos bd p count row col 
         | count >= 4 = True
@@ -108,6 +110,7 @@ module Board where
         | getElem bd row col == p = checkDiagTopPos bd p (count + 1) (row + 1) (col + 1)
         | getElem bd row col /= p = checkDiagTopPos bd p 0 (row + 1) (col + 1)
 
+    -- Check diagonal from top to bottom, negative.
     checkDiagTopNeg :: [[Int]] -> Int -> Int -> Int -> Int -> Bool
     checkDiagTopNeg bd p count row col
         | count >= 4 = True
@@ -115,7 +118,33 @@ module Board where
         | getElem bd row col == p = checkDiagTopNeg bd p (count + 1) (row + 1) (col - 1)
         | getElem bd row col /= p = checkDiagTopNeg bd p 0 (row + 1) (col - 1)
 
-    
+    -- Checks all diagonals from bottom left to top right.
+    checkDiagonalsBotPos :: [[Int]] -> Int -> Int -> Int -> Bool
+    checkDiagonalsBotPos bd p row col
+        | row < 0 || col >= numSlot bd = False
+    checkDiagonalsBotPos bd p row col = checkDiagBotPos bd p 0 row col || checkDiagonalsBotPos bd p row (col + 1)
+
+    -- Checks diagonal from bottom left to top right.
+    checkDiagBotPos :: [[Int]] -> Int -> Int -> Int -> Int -> Bool
+    checkDiagBotPos bd p count row col
+        | count >= 4 = True
+        | row < 0 || col >= numSlot bd = False
+        | getElem bd row col == p = checkDiagBotPos bd p (count + 1) (row - 1) (col + 1)
+        | getElem bd row col /= p = checkDiagBotPos bd p 0 (row - 1) (col + 1)
+
+    -- Checks all diagonals from bottom right to top left.
+    checkDiagonalsBotNeg :: [[Int]] -> Int -> Int -> Int -> Bool
+    checkDiagonalsBotNeg bd p row col
+        | row < 0 || col < 0 = False
+    checkDiagonalsBotNeg bd p row col = checkDiagBotNeg bd p 0 row col || checkDiagonalsBotNeg bd p row (col - 1)
+
+    -- Checks diagonal from bottom right to top left.
+    checkDiagBotNeg :: [[Int]] -> Int -> Int -> Int -> Int -> Bool
+    checkDiagBotNeg bd p count row col
+        | count >= 4 = True
+        | row < 0 || col < 0 = False
+        | getElem bd row col == p = checkDiagBotNeg bd p (count + 1) (row - 1) (col - 1)
+        | getElem bd row col /= p = checkDiagBotNeg bd p 0 (row - 1) (count - 1)
 
     -- [[0, 0, 0, 1, 0, 0],
     --  [0, 0, 1, 0, 0, 0],
