@@ -19,7 +19,7 @@ module Board where
     dropInSlot [] _ _ = [[]]
     dropInSlot bd i p 
         | not (isSlotOpen bd i) = []
-        | otherwise = replaceSlot bd p (numRows bd) i
+        | otherwise = replaceSlot bd p (numRows bd - 1) i
 
     --Replaces the empty slot with player number
     replaceSlot :: [[Int]] -> Int -> Int -> Int -> [[Int]]
@@ -84,6 +84,13 @@ module Board where
     -- Gets the element on given board and row col.
     getElem :: [[Int]] -> Int -> Int -> Int
     getElem bd row col = (bd !! row) !! col
+
+    boardToStr playerToChar bd = changeRow playerToChar (concat bd) 1
+
+    changeRow playerToChar [] i = " 0  1  2  3  4  5  6"
+    changeRow playerToChar (h:t) i
+        | ((mod i 7) == 0 ) = (playerToChar h)++"\n"++(changeRow playerToChar t 1)
+        | otherwise = (playerToChar h)++(changeRow playerToChar t (i+1))
 
 
     -- EXAMPLES of using (head : tail) with 2D array.
