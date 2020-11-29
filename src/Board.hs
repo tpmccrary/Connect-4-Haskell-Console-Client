@@ -87,9 +87,9 @@ module Board where
 
     boardToStr playerToChar bd = changeRow playerToChar (concat bd) 1
 
-    changeRow playerToChar [] i = " 0  1  2  3  4  5  6"
+    changeRow playerToChar [] i = " 1  2  3  4  5  6  7"
     changeRow playerToChar (h:t) i
-        | ((mod i 7) == 0 ) = (playerToChar h)++"\n"++(changeRow playerToChar t 1)
+        | (i == 7) = (playerToChar h)++"\n"++(changeRow playerToChar t 1)
         | otherwise = (playerToChar h)++(changeRow playerToChar t (i+1))
 
 

@@ -10,13 +10,16 @@ module Main where
     readSlot bd p = do 
         putStrLn "Enter Slot Position"
         slotPos <- getX
-        if isSlotOpen bd slotPos then do 
-            updatedBoard <- return (dropInSlot bd slotPos p) 
-            gameBoard <- return (boardToStr playerToChar updatedBoard)
-            putStrLn(gameBoard)
-            game updatedBoard p
-        else do 
-            putStrLn("Slot not open fren")
+        if slotPos == 8999 then putStrLn "I'm sorry Dave, I'm afraid I can't do that. Shutting down"
+        else do
+            if isSlotOpen bd slotPos then do 
+                updatedBoard <- return (dropInSlot bd slotPos p) 
+                gameBoard <- return (boardToStr playerToChar updatedBoard)
+                putStrLn(gameBoard)
+                game updatedBoard p
+            else do 
+                putStrLn("Slot not open fren")
+                readSlot bd p
 
     -- Checks for valid input
     getX = do
@@ -24,9 +27,9 @@ module Main where
         let parsed = reads line :: [(Int, String)] in 
             if length parsed == 0
             then getX'
-            else let (x, _) = head parsed in 
-            if x > -2 && x < 7
-                then return x 
+            else let (x, _) = head parsed in
+            if x > 0 && x < 8 || x == 9000
+                then return (x - 1)
                 else getX'
             where
             getX' = do
