@@ -27,9 +27,9 @@ module Board where
         | bd!!r!!c == 0 = (take r bd ++ [take c (bd!!r) ++ [p] ++ drop (c+1) (bd!!r)] ++ drop (r+1) bd) -- If empty slot, replace and update board
         | otherwise = replaceSlot bd p (r-1) c -- Slot Taken
     
-    -- returns num of rows - 1
+    -- returns num of rows
     numRows :: [[Int]] -> Int
-    numRows bd = length (bd) - 1
+    numRows bd = length (bd)
 
     -- returns num of columns
     numSlot :: [[Int]] -> Int
@@ -58,7 +58,7 @@ module Board where
     checkHorizontals :: [[Int]] -> Int -> Bool
     checkHorizontals [] _ = False
     checkHorizontals (head : tail) p = checkHorizontal head p 0  || checkHorizontals tail p
-    
+
     -- Goes through a list to see if there are 4 in a row of the given players pieces.
     checkHorizontal :: [Int] -> Int -> Int -> Bool
     checkHorizontal [] _ _ = False
@@ -66,6 +66,24 @@ module Board where
         | count >= 4 = True
         | head == p = checkHorizontal tail p (count + 1)
         | head /= p = checkHorizontal tail p 0
+    
+    -- Goes through each column and calls on checkVertical to check for 4.
+    checkVerticals :: [[Int]] -> Int -> Int -> Bool
+    checkVerticals bd _ col 
+        | col >= (numSlot bd) = False 
+    checkVerticals bd p col = checkVertical bd p 0 0 col || checkVerticals bd p (col + 1)
+
+    -- Checks for 4 in a row in a column
+    checkVertical :: [[Int]] -> Int -> Int -> Int -> Int -> Bool
+    checkVertical bd p count row col
+        | count >= 4 = True
+        | row >= numRows bd = False
+        | getElem bd row col == p = checkVertical bd p (count + 1) (row + 1) col
+        | getElem bd row col /= p = checkVertical bd p 0 (row + 1) col
+    
+    -- Gets the element on given board and row col.
+    getElem :: [[Int]] -> Int -> Int -> Int
+    getElem bd row col = (bd !! row) !! col
 
 
     -- EXAMPLES of using (head : tail) with 2D array.
